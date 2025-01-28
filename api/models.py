@@ -76,7 +76,7 @@ class Doctor(models.Model):
 class News(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(_('title'), max_length=150)
-    img = models.ImageField(upload_to='news/')
+    img = models.ImageField(upload_to='news/',null=True, blank=True)
     created_at = models.DateField(_('created at'), auto_now_add=True)
 
     objects = models.Manager()

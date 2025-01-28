@@ -3,7 +3,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
-from rest_framework.throttling import AnonRateThrottle
 from django.contrib.auth.hashers import make_password
 from rest_framework import status, filters
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -11,6 +10,7 @@ from api.models import Doctor, News, User
 from django_filters.rest_framework import DjangoFilterBackend
 from api.serializers import DoctorSerializer, NewsSerializer, RegisterSerializer, LoginSerializer
 from drf_spectacular.utils import extend_schema, OpenApiParameter
+
 
 
 class RegisterApiView(APIView):
@@ -76,18 +76,20 @@ class LoginApiView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class DoctorApiView(APIView):
+class DoctorListApiView(APIView):
     permission_classes = (IsAuthenticated,)
-    throttle_classes = (AnonRateThrottle,)
-
-    def get(self, request, pk=None):
-        if pk is not None:
-            doctor = get_object_or_404(Doctor, pk=pk)
-            serializer = DoctorSerializer(doctor)
-            return Response(serializer.data)
-
+    def get(self, request):
         doctors = Doctor.objects.all()
         serializer = DoctorSerializer(doctors, many=True)
+        return Response(serializer.data)
+
+
+class DoctorDetailApiView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, pk):
+        doctor = get_object_or_404(Doctor, pk=pk)
+        serializer = DoctorSerializer(doctor)
         return Response(serializer.data)
 
 
@@ -100,7 +102,6 @@ class DoctorFilterView(ListAPIView):
 
 
 class NewsApiView(APIView):
-    throttle_classes = (AnonRateThrottle,)
 
     def get(self, request, pk=None):
         if pk is not None:
