@@ -13,13 +13,13 @@ urlpatterns = [
     path("login/", LoginApiView.as_view(), name="login"),
 
     # Doctor routes
-    path("doctors/", DoctorListApiView.as_view(), name="doctors-list"),  # plural route for list
-    path("doctors/<int:pk>/", DoctorDetailApiView.as_view(), name="doctors-detail"),  # plural for consistency
+    path("doctors/", DoctorListApiView.as_view(), name="doctors-list"),
+    path("doctors/<int:pk>/", DoctorDetailApiView.as_view(), name="doctors-detail"),
 
     # Doctor search route
     path("search/", DoctorFilterView.as_view(), name="doctor-search"),
 
     # News routes
-    path("news/", NewsApiView.as_view(), name="news-list"),  # plural route for list
-    path("news/<int:pk>/", NewsApiView.as_view(), name="news-detail"),  # singular for a single item
+    path("news/", NewsApiView.as_view(), name="news-list"),
+    path("news/<int:pk>/", NewsApiView.as_view(), name="news-detail"),
 ]

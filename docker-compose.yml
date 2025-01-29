@@ -1,0 +1,32 @@
+services:
+  django:
+    restart: always
+    build: .
+    container_name: testing_django
+    command: >
+      sh -c "sleep 7 && python manage.py makemigrations &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - postgres_db
+    volumes:
+      - .:/app:cached
+
+  postgres_db:
+    image: postgres:alpine
+    container_name: testing_postgres_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: mrx_db
+      POSTGRES_PASSWORD: "1"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
