@@ -1,32 +1,37 @@
 services:
-  django:
-    restart: always
-    build: .
-    container_name: testing_django
-    command: >
-      sh -c "sleep 7 && python manage.py makemigrations &&
-             python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
-    ports:
-      - "8000:8000"
-    env_file:
-      - .env
-    depends_on:
-      - postgres_db
-    volumes:
-      - .:/app:cached
-
-  postgres_db:
-    image: postgres:alpine
-    container_name: testing_postgres_db
+  db:
+    image: postgres:17
+    container_name: postgres
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_DB: mrx_db
+      POSTGRES_DB: doctor_api
       POSTGRES_PASSWORD: "1"
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env.prod
 
+  django-web:
+    build: .
+    container_name: django
+    depends_on:
+      - db
+    volumes:
+      - ./static:/app/staticfiles
+    env_file:
+      - .env.prod
+
+  web-proxy:
+    image: nginx:latest
+    container_name: web-server
+    ports:
+      - "8000:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./static:/static:ro
+    depends_on:
+      - django-web
 volumes:
   postgres_data:

@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
@@ -10,7 +9,7 @@ from api.models import Doctor, News, User
 from django_filters.rest_framework import DjangoFilterBackend
 from api.serializers import DoctorSerializer, NewsSerializer, RegisterSerializer, LoginSerializer
 from drf_spectacular.utils import extend_schema, OpenApiParameter
-
+from rest_framework.permissions import IsAuthenticated
 
 
 class RegisterApiView(APIView):
@@ -78,6 +77,7 @@ class LoginApiView(APIView):
 
 class DoctorListApiView(APIView):
     permission_classes = (IsAuthenticated,)
+
     def get(self, request):
         doctors = Doctor.objects.all()
         serializer = DoctorSerializer(doctors, many=True)
