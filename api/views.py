@@ -1,15 +1,18 @@
 from django.shortcuts import get_object_or_404
+from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, UpdateAPIView
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
 from rest_framework import status, filters
 from rest_framework_simplejwt.tokens import RefreshToken
 from api.models import Doctor, News, User
 from django_filters.rest_framework import DjangoFilterBackend
-from api.serializers import DoctorSerializer, NewsSerializer, RegisterSerializer, LoginSerializer
+from api.serializers import DoctorSerializer, NewsSerializer, RegisterSerializer, LoginSerializer, \
+    DoctorUpdateSerializer, UserUpdateSerializer
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
 
 
 class RegisterApiView(APIView):
@@ -75,13 +78,50 @@ class LoginApiView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class UserUpdateView(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+
+    @extend_schema(
+        request=UserUpdateSerializer,
+        responses={200: "User updated successfully"}
+    )
+    def put(self, request, pk):
+        user = get_object_or_404(User, pk=pk)  # Gracefully handle non-existing user
+        serializer = UserUpdateSerializer(instance=user, data=request.data, partial=False)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "User updated successfully"}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class DoctorListApiView(APIView):
-    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         doctors = Doctor.objects.all()
         serializer = DoctorSerializer(doctors, many=True)
         return Response(serializer.data)
+
+
+class DoctorUpdateApiView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    @extend_schema(
+        summary="Doctor Update",
+        description="Doctor update data",
+        request=DoctorUpdateSerializer,  # Specify request body fields
+        responses={
+            200: OpenApiParameter(name="Update", description="Doctor update data"),
+            400: OpenApiParameter(name="Errors", description="Invalid credentials or validation errors"),
+        },
+        tags=["Doctor Update"]
+    )
+    def put(self, request, pk):
+        doctor = get_object_or_404(Doctor, pk=pk)
+        serializer = DoctorUpdateSerializer(doctor, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class DoctorDetailApiView(APIView):

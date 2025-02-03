@@ -27,13 +27,29 @@ class UserSerializer(serializers.ModelSerializer):
             representation['avatar'] = None
         return representation
 
+class AvatarField(serializers.ImageField):
+    ...
+
+class UserUpdateSerializer(serializers.ModelSerializer):
+    avatar = AvatarField()
+    class Meta:
+        model = User
+        fields = ["first_name", "last_name", "avatar"]
+
+class DoctorUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Doctor
+        fields = ['id', 'specialization', 'experience', 'location', 'clinic_name',
+                  'consultation_fee', 'is_consultation_free', 'available_today',
+                  'rating_percentage', 'patient_stories', ]
+
 
 class DoctorSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 
     class Meta:
         model = Doctor
-        fields = ['user', 'specialization', 'experience', 'location', 'clinic_name', 'consultation_fee',
+        fields = ['user', 'id', 'specialization', 'experience', 'location', 'clinic_name', 'consultation_fee',
                   'is_consultation_free', 'available_today', 'rating_percentage', 'patient_stories']
 
 
