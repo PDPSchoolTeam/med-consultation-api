@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Doctor, User, News
+from api.models import Doctor, User, News, Date
 from root import settings
 
 
@@ -27,14 +27,14 @@ class UserSerializer(serializers.ModelSerializer):
             representation['avatar'] = None
         return representation
 
-class AvatarField(serializers.ImageField):
-    ...
 
 class UserUpdateSerializer(serializers.ModelSerializer):
-    avatar = AvatarField()
+    avatar = serializers.ImageField()
+
     class Meta:
         model = User
         fields = ["first_name", "last_name", "avatar"]
+
 
 class DoctorUpdateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -67,3 +67,17 @@ class NewsSerializer(serializers.ModelSerializer):
         else:
             representation['img'] = None
         return representation
+
+
+class DateSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    class Meta:
+        model = Date
+        fields = ['id', 'user', 'doctor', 'date', 'time', 'status']
+
+
+class BookingSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+    class Meta:
+        model = Date
+        fields = ['id', 'user', 'doctor', 'date', 'time', 'status']

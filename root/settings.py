@@ -112,6 +112,9 @@ REST_FRAMEWORK = {
         'anon': '5/minute',  # Faqatgina anonim foydalanuvchilar uchun 1 daqiqada 5 so'rov # noqa
         'user': '10/minute',  # Tizimga kirgan foydalanuvchilar uchun 1 daqiqada 10 so'rov  # noqa
     },
+    'DATETIME_INPUT_FORMATS': ['%d-%m-%Y %H:%M:%S', '%d-%m-%Y %-H:%M:%S'],
+    'DATE_INPUT_FORMATS': ['%d-%m-%Y %H:%M:%S', '%d-%m-%Y %-H:%M:%S'],
+    'DATETIME_FORMAT': '%d-%m-%Y %-H:%M:%S',
 }
 
 # Internationalization

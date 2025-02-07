@@ -7,13 +7,20 @@ from api.views import (
     DoctorFilterView,
     NewsApiView,
     DoctorUpdateApiView,
-    UserUpdateView
+    UserUpdateView,
+    DoctorDateAPIView,
+    BookingAPIView
 )
 
 urlpatterns = [
+    # user routes
     path("register/", RegisterApiView.as_view(), name="register"),
     path("login/", LoginApiView.as_view(), name="login"),
     path("users/update/<int:pk>/", UserUpdateView.as_view(), name="users"),
+
+    # Booking routes
+    path("date/", DoctorDateAPIView.as_view(), name="doctors"),
+    path("booking/<int:pk>/", BookingAPIView.as_view(), name="booking"),
 
     # Doctor routes
     path("doctors/", DoctorListApiView.as_view(), name="doctors-list"),

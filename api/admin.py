@@ -3,6 +3,7 @@ from api.models import (
     User,
     Doctor,
     News,
+    Date,
 
 )
 
@@ -10,6 +11,12 @@ from api.models import (
 admin.site.register(Doctor)
 admin.site.register(News)
 
+
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('id','username', 'email', 'is_staff')
+    list_display = ('id', 'username', 'email', 'is_staff')
+
+
+@admin.register(Date)
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('user','status', 'doctor', 'date', 'time')

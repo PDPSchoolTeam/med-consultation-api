@@ -76,7 +76,7 @@ class Doctor(models.Model):
 class News(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(_('title'), max_length=150)
-    img = models.ImageField(upload_to='news/',null=True, blank=True)
+    img = models.ImageField(upload_to='news/', null=True, blank=True)
     created_at = models.DateField(_('created at'), auto_now_add=True)
 
     objects = models.Manager()
@@ -85,3 +85,22 @@ class News(models.Model):
         return self.title
 
 
+class Date(models.Model):
+    STATUS = [
+        ('pending', 'Pending'),
+        ('confirmed', 'Confirmed'),
+        ('completed', 'Completed'),
+        ('rejected', 'Rejected')
+    ]
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user', null=True, blank=True)
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='doctor')
+    date = models.DateField(_('date'))
+    time = models.TimeField(_('time'))
+    status = models.CharField(max_length=15, choices=STATUS, default='pending')
+    created_at = models.DateField(_('created at'), auto_now_add=True)
+
+    objects = models.Manager()
+
+
+    def __str__(self):
+        return f'{self.doctor} - {self.time}'
