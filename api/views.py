@@ -1,18 +1,20 @@
 from django.shortcuts import get_object_or_404
-from rest_framework.status import HTTP_200_OK
 from rest_framework.views import APIView
-from rest_framework.generics import ListAPIView, UpdateAPIView
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
 from rest_framework import status, filters
 from rest_framework_simplejwt.tokens import RefreshToken
-from api.models import Doctor, News, User
+from api.models import Doctor, News, User, Date
 from django_filters.rest_framework import DjangoFilterBackend
-from api.serializers import DoctorSerializer, NewsSerializer, RegisterSerializer, LoginSerializer, \
-    DoctorUpdateSerializer, UserUpdateSerializer
 from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
+from api.serializers import (
+    DoctorSerializer, NewsSerializer,
+    RegisterSerializer, LoginSerializer,
+    DoctorUpdateSerializer, UserUpdateSerializer,
+    DateSerializer, BookingSerializer)
 
 
 class RegisterApiView(APIView):
@@ -151,4 +153,26 @@ class NewsApiView(APIView):
 
         news = News.objects.all()
         serializer = NewsSerializer(news, many=True)
+        return Response(serializer.data)
+
+
+class DoctorDateAPIView(APIView):
+    def get(self, request):
+        date = Date.objects.filter(status='pending')
+        serializer = DateSerializer(date, many=True)
+        return Response(serializer.data)
+
+
+class BookingAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, pk):
+        user = request.user
+        Date.objects.filter(pk=pk, status='pending').update(user=user, status='confirmed')
+        try:
+            date = Date.objects.get(pk=pk, status='confirmed')
+        except Date.DoesNotExist:
+            return Response({"error": "Date not found or not pending"}, status=404)
+
+        serializer = BookingSerializer(date)
         return Response(serializer.data)
