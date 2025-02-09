@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
 from api.managers import UserManager
 from django.core.mail import send_mail
 from django.db import models
@@ -106,3 +107,17 @@ class Date(models.Model):
 
     def __str__(self):
         return f'{self.doctor} - {self.time}'
+
+    # Model darajasida dasturiy tekshirish  # noqa
+    # Modelning clean() metodida unikal bo'lishini tekshiring: # noqa
+
+    # def clean(self):
+    #     # Shu doktor, sana va vaqtda mavjud bron bor-yo‘qligini tekshiradi  # noqa
+    #     if Date.objects.filter(doctor=self.doctor, date=self.date, time=self.time).exists():
+    #         raise ValidationError("Bu vaqtda doktor allaqachon band qilingan.")  # noqa
+
+    # Saqlashdan oldin tekshirish uchun save() metodiga chaqiring: # noqa
+    # def save(self, *args, **kwargs):
+    #     self.clean()
+    #     super().save(*args, **kwargs)
+    # ./mig.sh
