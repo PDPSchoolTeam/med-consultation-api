@@ -7,7 +7,6 @@ from api.models import (
 
 )
 
-# admin.site.register(User)
 admin.site.register(Doctor)
 admin.site.register(News)
 
@@ -19,4 +18,5 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Date)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('user','status', 'doctor', 'date', 'time')
+    list_display = ('user', 'status', 'doctor', 'date', 'time')
+    search_fields = ('date', 'time','status')
