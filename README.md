@@ -36,19 +36,39 @@ The Med Consultation API is a Django Rest Framework (DRF) based platform designe
 ## Project Structure
 ```plaintext
 med-consultation-api/
-├── app/
-│   ├── manage.py               # Entry point of the Django project
-│   ├── settings/                # Configuration and environment settings
-│   ├── models/                  # Database models
-│   ├── views/                   # API view logic
-│   ├── urls.py                  # URL routing
-│   ├── serializers/             # DRF serializers for request and response validation
-│   ├── utils/                   # Utility functions
-├── tests/                       # Test cases for the application
+├── api/
+│   ├── migrations/              # Database migrations
+│   ├── __init__.py              # Package initialization
+│   ├── admin.py                 # Django admin configuration
+│   ├── apps.py                  # App configuration
+│   ├── managers.py              # Custom database managers
+│   ├── models.py                # Database models
+│   ├── serializers.py           # DRF serializers for request and response validation
+│   ├── tests.py                 # Unit tests
+│   ├── urls.py                  # URL routing for the API
+│   └── views.py                 # API view logic
+├── media/
+│   ├── avatars/                 # User avatar storage
+│   └── news/                    # News-related media files
+├── root/
+│   ├── __init__.py              # Project package initialization
+│   ├── asgi.py                  # ASGI configuration
+│   ├── settings.py              # Project settings
+│   ├── urls.py                  # Root URL routing
+│   └── wsgi.py                  # WSGI configuration
+├── static/                      # Static files for the project
+├── .env.local                   # Local environment variables
+├── .env.prod                    # Production environment variables
+├── docker-compose.yml           # Docker Compose configuration
 ├── Dockerfile                   # Docker configuration
+├── entrypoint.prod.sh           # Entry point script for production
+├── manage.py                    # Django management script
+├── mig.sh                       # Migration script helper
+├── nginx.conf                   # Nginx configuration
+├── pytest.ini                   # Pytest configuration
+├── README.md                    # Project documentation
 ├── requirements.txt             # Python dependencies
-├── .env.example                 # Example environment variables file
-└── README.md                    # Project documentation
+└── TODO                         # Pending development tasks
 ```
 
 ## Installation
