@@ -122,7 +122,7 @@ python manage.py runserver
 ## API Documentation
 Once the application is running, visit:
 - DRF's Browsable API: [http://localhost:8000/api/](http://localhost:8000/api/)
-- Swagger/OpenAPI: [http://localhost:8000/docs](http://localhost:8000/docs) (if configured)
+- Swagger/OpenAPI: [http://127.0.0.1:8000/api/docs#/](http://127.0.0.1:8000/api/docs#/) (if configured)
 
 ## Best Practices Followed
 1. **Modular Architecture:** Organized code into views, serializers, and models.
