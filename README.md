@@ -1,5 +1,8 @@
 # Med Consultation API
 
+<img width="1228" alt="Screenshot 2025-02-10 at 11 17 29" src="https://github.com/user-attachments/assets/fa14d174-8533-471c-a021-6b2a2fb15453" />
+
+
 The Med Consultation API is a Django Rest Framework (DRF) based platform designed for online medical consultations, appointment scheduling, and patient management.
 
 ## Table of Contents
