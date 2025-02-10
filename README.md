@@ -36,6 +36,9 @@ The Med Consultation API is a Django Rest Framework (DRF) based platform designe
 - **Testing:** Pytest
 - **Documentation:** DRF's built-in API documentation and Swagger/OpenAPI
 
+  <img width="1227" alt="Screenshot 2025-02-10 at 11 18 44" src="https://github.com/user-attachments/assets/29a4db38-cdaf-499e-8ba6-27bb965d698e" />
+
+
 ## Project Structure
 ```plaintext
 med-consultation-api/
