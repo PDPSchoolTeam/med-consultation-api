@@ -86,7 +86,7 @@ med-consultation-api/
 ### Steps
 1. Clone the repository:
     ```bash
-    git clone https://github.com/themusharraf/med-consultation-api.git
+    git clone https://github.com/PDPSchoolTeam/med-consultation-api.git
     cd med-consultation-api
     ```
 2. Create a virtual environment and activate it:
